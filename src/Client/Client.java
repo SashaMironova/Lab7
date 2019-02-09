@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class Client {
     public static void main(String[] args) {
-        int serverPort = 1234;
+        int serverPort = 1235;
         String address = "127.0.0.1";
         try {
             InetAddress ipAddress = InetAddress.getByName(address);

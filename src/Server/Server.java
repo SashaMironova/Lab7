@@ -3,38 +3,45 @@ package Server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
 public class Server {
-    private static CopyOnWriteArrayList<InjuredPoliceman> injuredPolicemen;
+    public static Vector<InjuredPoliceman> injuredPolicemen;
+    public static Gson gson = new Gson();
+    public static String json = "";
+    public static InputOutput inputOutput = new InputOutput();
 
     public static void main(String[] args) {
 
-        Gson gson = new Gson();
-        String json = "";
-
-        InputOutput inputOutput = new InputOutput();
-
         String str = inputOutput.input();
-        Type type = new TypeToken<CopyOnWriteArrayList<InjuredPoliceman>>() {
+        Type type = new TypeToken<Vector<InjuredPoliceman>>() {
         }.getType();
         injuredPolicemen = gson.fromJson(str, type);
 
         if (injuredPolicemen == null)
-            injuredPolicemen = new CopyOnWriteArrayList<InjuredPoliceman>();
+            injuredPolicemen = new Vector<InjuredPoliceman>();
 
         Collections.sort(injuredPolicemen, new InjuredPolicemanComparator());
+        GUIServer guiServer = new GUIServer();
 
-        int port = 1234;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                guiServer.createGUI();
+            }
+        });
+
+        int port = 1235;
         try {
             ServerSocket ss;
             Socket socket;
@@ -99,7 +106,7 @@ public class Server {
                         break;
 
                     case "clear":
-                        injuredPolicemen = new CopyOnWriteArrayList<InjuredPoliceman>();
+                        injuredPolicemen = new Vector<InjuredPoliceman>();
                         out.writeUTF("OK");
                         break;
 
