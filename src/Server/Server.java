@@ -20,6 +20,7 @@ public class Server {
     public static Gson gson = new Gson();
     public static String json = "";
     public static InputOutput inputOutput = new InputOutput();
+    public static GUIServer guiServer;
 
     public static void main(String[] args) {
 
@@ -32,7 +33,7 @@ public class Server {
             injuredPolicemen = new Vector<InjuredPoliceman>();
 
         Collections.sort(injuredPolicemen, new InjuredPolicemanComparator());
-        GUIServer guiServer = new GUIServer();
+        guiServer = new GUIServer();
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -40,6 +41,7 @@ public class Server {
                 guiServer.createGUI();
             }
         });
+
 
         int port = 1235;
         try {
@@ -71,6 +73,11 @@ public class Server {
 
             DataInputStream in = new DataInputStream(inputStream);
             DataOutputStream out = new DataOutputStream(outputStream);
+
+            Collections.sort(injuredPolicemen, new InjuredPolicemanComparator());
+            json = gson.toJson(injuredPolicemen);
+            System.out.println(json);
+            out.writeUTF(json);
             while (true) {
                 String line = null;
                 line = in.readUTF();//в лайне лежит строка, полученная от клиента
