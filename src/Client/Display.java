@@ -1,10 +1,11 @@
 package Client;
+
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 
 public class Display extends JPanel {
 
+    //private boolean showed = false;
     public void paintComponent(Graphics g){
 
         super.paintComponent(g);
@@ -40,7 +41,17 @@ public class Display extends JPanel {
             }
             int x = (int)Client.injuredPolicemen.get(i).x;
             int y = (int)Client.injuredPolicemen.get(i).y;
-            g.fillOval(x,y,10,10);
+            int size = (int)Client.injuredPolicemen.get(i).size;
+            g.fillOval(x,y,size,size);
+//            if (!showed) {
+////                JLabel label = new JLabel(Client.injuredPolicemen.get(i).name);
+////                label.setSize(50, 40);
+////                label.setLocation(x + 15, y - 10);
+//                //label.setToolTipText(Client.injuredPolicemen.get(i).name);
+//                //this.add(label);
+//            }
+            //g.setToolTipText("cvbnmk,");
         }
+        //showed = true;
     }
 }

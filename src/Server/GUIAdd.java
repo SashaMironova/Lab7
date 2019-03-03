@@ -54,11 +54,11 @@ public class GUIAdd extends JFrame {
         lCoordinates.setHorizontalAlignment(lCoordinates.LEFT);
         lCoordinates.setFont(font1);
 
-        lCoordinateX = new JLabel("X:");
+        lCoordinateX = new JLabel("X[0;400]:");
         lCoordinateX.setHorizontalAlignment(lCoordinateX.CENTER);
         lCoordinateX.setFont(font1);
 
-        lCoordinateY = new JLabel("Y:");
+        lCoordinateY = new JLabel("Y[0;600]:");
         lCoordinateY.setHorizontalAlignment(lCoordinateY.CENTER);
         lCoordinateY.setFont(font1);
 
@@ -89,7 +89,6 @@ public class GUIAdd extends JFrame {
         });
 
         tName = new JTextField();
-        //tName.setToolTipText("cvbnmk,");
         tYearOfBirth = new JTextField();
         lEmpty = new JLabel("");
         tX = new JTextField();
@@ -226,6 +225,16 @@ public class GUIAdd extends JFrame {
         } catch (Exception e){
             lError.setText("Wrong format of \"Year of birth\"");
         }
+        double x = Double.parseDouble(tX.getText());
+        double y = Double.parseDouble(tY.getText());
+        if(!((x<=400)&(0<=x))){
+           lError.setText("X should be in [0;400]");
+           return;
+        }
+        if(!((y<=600)&(0<=y))){
+            lError.setText("Y should be in [0;600]");
+            return;
+        }
         if ((tName.getText().equals(""))||(tYearOfBirth.getText().equals(""))||(tX.getText().equals(""))||(tY.getText().equals("")))
             lError.setText("Text fields are empty");
         else {
@@ -293,8 +302,6 @@ public class GUIAdd extends JFrame {
             }
             injuredPoliceman.colour = getSelectedButtonText(buttonGroupColour);
             Server.injuredPolicemen.add(injuredPoliceman);
-            //Server.guiServer.tree = new JTree(Server.injuredPolicemen);
-            //DefaultTreeModel model = (DefaultTreeModel) Server.guiServer.tree.getModel();
             Server.json = Server.gson.toJson(Server.injuredPolicemen);
             Server.inputOutput.output(Server.json);
             DefaultTreeModel model = (DefaultTreeModel) Server.guiServer.tree.getModel();
@@ -303,6 +310,7 @@ public class GUIAdd extends JFrame {
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(injuredPoliceman);
             root.add(child);
             model.reload();
+            dispose();
         }
     }
 

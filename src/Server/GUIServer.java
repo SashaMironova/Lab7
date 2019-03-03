@@ -22,6 +22,7 @@ import java.lang.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Vector;
 
 
 public class GUIServer extends JFrame {
@@ -33,7 +34,6 @@ public class GUIServer extends JFrame {
     JLabel lMessage;
     public static JTree tree;
 
-    //@SuppressWarnings("unchecked")
     public GUIServer() {
         super("Сервер");
     }
@@ -68,6 +68,11 @@ public class GUIServer extends JFrame {
         });
 
         bClear = new JButton("Clear collection");
+        bClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bClearActionPerformed(evt);
+            }
+        });
 
         lMessage = new JLabel("");
         lMessage.setForeground(new Color(255, 0, 51));
@@ -137,7 +142,6 @@ public class GUIServer extends JFrame {
             for (int i=0; i<=number;i++) {
                 id = Server.injuredPolicemen.get(0).id;
                 Server.injuredPolicemen.remove(0);
-                //Enumeration en = root.breadthFirstEnumeration();
                 for(int j =0;j<nodes.size();j++){
                     if(!nodes.get(j).isRoot()) {
                         InjuredPoliceman object1 = (InjuredPoliceman) nodes.get(j).getUserObject();
@@ -158,12 +162,25 @@ public class GUIServer extends JFrame {
     private void bAddActionPerformed(ActionEvent evt) {
         GUIAdd.createGUI();
     }
+
     private void bEditActionPerformed(ActionEvent evt){
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-        if (selectedNode!=null)
+        if (selectedNode!=null) {
+            lMessage.setText("");
             GUIEdit.createGUI(selectedNode);
-        else//todo:очистить коллекцию через кнопку
+        }else
             lMessage.setText("You should select policeman to edit");
+    }
+
+    private void bClearActionPerformed(ActionEvent evt) {
+        lMessage.setText("");
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)tree.getModel().getRoot();
+        root.removeAllChildren();
+        model.reload();
+        Server.injuredPolicemen = new Vector<InjuredPoliceman>();
+        Server.json = Server.gson.toJson(Server.injuredPolicemen);
+        Server.inputOutput.output(Server.json);
     }
 
     public static void createGUI(){
@@ -175,4 +192,3 @@ public class GUIServer extends JFrame {
         frame.setSize(400,600);
     }
 }
-//todo: сделать проверку у координат по x 400 и у 600

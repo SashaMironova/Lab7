@@ -64,11 +64,11 @@ public class GUIEdit extends JFrame{
         lCoordinates.setHorizontalAlignment(lCoordinates.LEFT);
         lCoordinates.setFont(font1);
 
-        lCoordinateX = new JLabel("X:");
+        lCoordinateX = new JLabel("X[0;400]:");
         lCoordinateX.setHorizontalAlignment(lCoordinateX.CENTER);
         lCoordinateX.setFont(font1);
 
-        lCoordinateY = new JLabel("Y:");
+        lCoordinateY = new JLabel("Y[0;600]:");
         lCoordinateY.setHorizontalAlignment(lCoordinateY.CENTER);
         lCoordinateY.setFont(font1);
 
@@ -100,7 +100,6 @@ public class GUIEdit extends JFrame{
 
         tName = new JTextField();
         tName.setText(Server.injuredPolicemen.get(number).name);
-        //tName.setToolTipText("cvbnmk,");
         tYearOfBirth = new JTextField();
         tYearOfBirth.setText(Integer.toString(Server.injuredPolicemen.get(number).yearOfBirth));
         lEmpty = new JLabel("");
@@ -358,6 +357,7 @@ public class GUIEdit extends JFrame{
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(injuredPoliceman);
             root.add(child);
             model.reload();
+            dispose();
         }
     }
 
